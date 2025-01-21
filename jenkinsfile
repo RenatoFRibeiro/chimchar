@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build -t resume-matcher .'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'python manage.py test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker run -p 8000:8000 resume-matcher'
+            }
+        }
+    }
+}

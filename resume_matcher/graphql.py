@@ -1,18 +1,15 @@
 import graphene
-from .models import Resume
+from graphene_django.types import DjangoObjectType
+from .models import JobPosting, MatchResult
 
-class UploadResume(graphene.Mutation):
-    class Arguments:
-        file = graphene.String(required=True)
+class JobPostingType(DjangoObjectType):
+    class Meta:
+        model = JobPosting
 
-    success = graphene.Boolean()
+class Query(graphene.ObjectType):
+    job_postings = graphene.List(JobPostingType)
 
-    def mutate(self, info, file):
-        # Lógica de upload
-        Resume.objects.create(file=file)
-        return UploadResume(success=True)
+    def resolve_job_postings(self, info, **kwargs):
+        return JobPosting.objects.all()
 
-class Mutation(graphene.ObjectType):
-    upload_resume = UploadResume.Field()
-
-schema = graphene.Schema(mutation=Mutation)
+schema = graphene.Schema(query=Query)

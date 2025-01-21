@@ -15,13 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from resume_matcher.views import ResumeUploadView
+from django.urls import include, path
+from resume_matcher.views import ResumeUploadView, MatchResultsView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('resume_matcher.urls')),
+
 ]
 
 urlpatterns = [
-    path('upload/', ResumeUploadView.as_view(), name='resume-upload'),
+    path('upload-resume/', ResumeUploadView.as_view(), name='upload-resume'),
+    path('match-results/<int:resume_id>/', MatchResultsView.as_view(), name='match-results'),
 ]
