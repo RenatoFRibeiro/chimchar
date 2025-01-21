@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from resume_matcher.views import ResumeUploadView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+]
+
+urlpatterns = [
+    path('upload/', ResumeUploadView.as_view(), name='resume-upload'),
 ]
