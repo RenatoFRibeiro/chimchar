@@ -36,6 +36,7 @@ The application leverages **Django** and **Django REST Framework (DRF)** for bac
 
 ## Project Structure
 
+```markdown
 backend_challenge/
 │
 ├── backend_challenge/       # Main Django project folder
@@ -57,35 +58,43 @@ backend_challenge/
 ├── Dockerfile               # Dockerfile for containerization
 ├── requirements.txt         # Python dependencies
 └── README.md                # Documentation
+```
 
 # Installation and Setup
 
 ## Clone the Repository
+```markdown
 git clone https://github.com/RenatoFRibeiro/chimchar.git
 cd backend_challenge
+```
 
 ## Set Up a Virtual Environment
+```markdown
 python -m venv venv
 source venv/bin/activate       # On Linux/Mac
 venv\Scripts\activate          # On Windows
-
+```
 ## Install Dependencies
+```markdown
 pip install -r requirements.txt
 python -m spacy download en_core_web_sm
-
+```
 ## Run Database Migrations
+```markdown
 python manage.py makemigrations
 python manage.py migrate
-
+```
 ## Run the Development Server
+```markdown
 python manage.py runserver
-
+```
 ## Access the Application
 
 REST API: http://127.0.0.1:8000/api/
 Admin Panel: http://127.0.0.1:8000/admin/
 API Endpoints
 1. Upload Resume
+```markdown
 Endpoint: POST /api/upload-resume/
 Payload: File upload (file key in form-data)
 Response:
@@ -104,8 +113,9 @@ Response:
     "gap_details": "Missing skills: REST API"
   }
 ]
-
+```
 ## GraphQL Query (Job Postings)
+```markdown
 Endpoint: POST /graphql/
 Example Query:
 query {
@@ -114,24 +124,28 @@ query {
     description
   }
 }
-
+```
 # Run Tests
 
 ## Run Unit Tests
+```markdown
 python manage.py test
-
+```
 ## Generate Test Coverage Report
+```markdown
 coverage run manage.py test
 coverage report
-
+```
 # Run with Docker
 
 ## Build Docker Image
+```markdown
 docker build -t resume-matcher .
-
+```
 ## Run Docker Container
+```markdown
 docker run -p 8000:8000 resume-matcher
-
+```
 # Future Improvements
 
 Enhance NLP capabilities with custom spaCy models.
