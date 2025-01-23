@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume List</title>
+</head>
+<body>
+    <h2>Resume List</h2>
+    <ul>
+        {% for resume in resumes %}
+            <li>{{ resume.file.name }} - {{ resume.uploaded_at }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'upload_resume' %}"><button>Voltar</button></a>  <!-- Botão de Voltar -->
+</body>
+</html>
