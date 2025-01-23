@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Openings</title>
+</head>
+<body>
+    <h2>Job Openings</h2>
+    <ul>
+        {% for job in job_openings %}
+            <li>
+                <strong>Title:</strong> {{ job.title }}<br>
+                <strong>Company:</strong> {{ job.company }}<br>
+                <strong>Location:</strong> {{ job.location }}<br>
+                <strong>Description:</strong> {{ job.description }}<br>
+                <strong>Skills Required:</strong> {{ job.skills_required }}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'job_manager' %}"><button>Add Job Opening</button></a>
+    <a href="{% url 'homepage' %}"><button>Back to Homepage</button></a>
+</body>
+</html>

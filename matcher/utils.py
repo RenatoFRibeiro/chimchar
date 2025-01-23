@@ -1,6 +1,7 @@
 import spacy
 import fitz  # PyMuPDF
 import re
+from .models import Resume, JobOpening
 
 def extract_text_from_pdf(pdf_path):
     document = fitz.open(pdf_path)
@@ -11,15 +12,10 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 def extract_relevant_details(text):
-    nlp = spacy.load('en_core_web_sm')
-    doc = nlp(text)
-    print("The doc has the following elements:", doc)
-    
     skills = []
     experience = []
     education = []
 
-    # Usar expressões regulares para identificar seções
     skills_section = re.search(r'Skills(.*?)(Experience|Education|$)', text, re.DOTALL | re.IGNORECASE)
     experience_section = re.search(r'Experience(.*?)(Skills|Education|$)', text, re.DOTALL | re.IGNORECASE)
     education_section = re.search(r'Education(.*?)(Skills|Experience|$)', text, re.DOTALL | re.IGNORECASE)
@@ -41,3 +37,33 @@ def extract_relevant_details(text):
         'experience': experience,
         'education': education
     }
+
+def calculate_match_percentage(resume, job_opening):
+    resume_skills = set(re.findall(r'\b\w+\b', resume.skills.lower()))
+    job_skills = set(re.findall(r'\b\w+\b', job_opening.skills_required.lower()))
+
+    matching_skills = resume_skills.intersection(job_skills)
+    total_skills = job_skills
+
+    match_percentage = (len(matching_skills) / len(total_skills)) * 100 if total_skills else 0
+
+    return match_percentage, matching_skills, total_skills - matching_skills
+
+
+def compare_resume_with_jobs(resume):
+    job_openings = JobOpening.objects.all()
+    results = []
+
+    for job in job_openings:
+        match_percentage, matching_skills, missing_skills = calculate_match_percentage(resume, job)
+        results.append({
+            'job': job,
+            'match_percentage': match_percentage,
+            'matching_skills': matching_skills,
+            'missing_skills': missing_skills
+        })
+
+    # Ordenar os resultados pela porcentagem de correspondência
+    results.sort(key=lambda x: x['match_percentage'], reverse=True)
+
+    return results

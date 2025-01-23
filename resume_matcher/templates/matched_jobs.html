@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matched Jobs</title>
+</head>
+<body>
+    <h2>Matched Jobs for {{ resume.file.name }}</h2>
+    <ul>
+        {% for result in results %}
+            <li>
+                <strong>Job Title:</strong> {{ result.job.title }}<br>
+                <strong>Company:</strong> {{ result.job.company }}<br>
+                <strong>Location:</strong> {{ result.job.location }}<br>
+                <strong>Match Percentage:</strong> {{ result.match_percentage }}%<br>
+                <strong>Matching Skills:</strong> {{ result.matching_skills|join:", " }}<br>
+                <strong>Missing Skills:</strong> {{ result.missing_skills|join:", " }}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'homepage' %}"><button>Back to Homepage</button></a>
+</body>
+</html>
