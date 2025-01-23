@@ -1,16 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import ResumeForm
 from .models import Resume
-
-def upload_resume(request):
-    if request.method == 'POST':
-        form = ResumeForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('resume_list')
-    else:
-        form = ResumeForm()
-    return render(request, 'upload_resume.html', {'form': form})
+from .utils import extract_text_from_pdf, extract_relevant_details
 
 def resume_list(request):
     resumes = Resume.objects.all()
@@ -20,8 +11,15 @@ def upload_resume(request):
     if request.method == 'POST':
         form = ResumeForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('resume_list')  # Redirecionar para a lista de resumes
+            resume = form.save()
+            pdf_path = resume.file.path
+            extracted_text = extract_text_from_pdf(pdf_path)
+            details = extract_relevant_details(extracted_text)
+            resume.skills = ', '.join(details['skills'])
+            resume.experience = ', '.join(details['experience'])
+            resume.education = ', '.join(details['education'])
+            resume.save()
+            return redirect('resume_list')
     else:
         form = ResumeForm()
     return render(request, 'upload_resume.html', {'form': form})
