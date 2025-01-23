@@ -6,3 +6,11 @@ class Resume(models.Model):
     skills = models.TextField(blank=True)
     experience = models.TextField(blank=True)
     education = models.TextField(blank=True)
+
+class JobOpening(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    skills_required = models.TextField()
+    company = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
+    posted_at = models.DateTimeField(auto_now_add=True)

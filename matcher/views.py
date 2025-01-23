@@ -1,7 +1,14 @@
 from django.shortcuts import render, redirect
 from .forms import ResumeForm
-from .models import Resume
+from .models import Resume, JobOpening
 from .utils import extract_text_from_pdf, extract_relevant_details
+from .serializers import JobOpeningSerializer
+from rest_framework import viewsets
+
+
+class JobOpeningViewSet(viewsets.ModelViewSet):
+    queryset = JobOpening.objects.all()
+    serializer_class = JobOpeningSerializer
 
 def resume_list(request):
     resumes = Resume.objects.all()
