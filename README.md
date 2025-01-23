@@ -1,5 +1,12 @@
 # Resume Matcher Backend Challenge
 
+## TODO
+- **The POST option is not working yet**
+- **Complete Docker**
+- **Add Jenkins**
+- **Next.js interface**
+- **Etc**
+
 ## Overview
 The **Resume Matcher Backend Challenge** is a backend application designed to match resumes against job postings. It provides REST API endpoints for uploading resumes, processing them, and generating matching results based on job requirements.
 
@@ -7,7 +14,7 @@ The application leverages **Django** and **Django REST Framework (DRF)** for bac
 
 ## Features
 - **Upload Resumes**  
-  Users can upload resumes (e.g., `.txt` or `.pdf`) that are processed and stored in the database.
+  Users can upload resumes (`.pdf`) that are processed and stored in the database.
 
 - **Job Posting Management**  
   Add job descriptions to the database to define matching criteria.
@@ -37,27 +44,30 @@ The application leverages **Django** and **Django REST Framework (DRF)** for bac
 ## Project Structure
 
 ```markdown
-backend_challenge/
-│
-├── backend_challenge/       # Main Django project folder
-│   ├── settings.py          # Django settings
-│   ├── urls.py              # Main URL routing
-│   └── ...
-│
-├── resume_matcher/          # App for resume matching
-│   ├── models.py            # Database models
-│   ├── views.py             # API views
-│   ├── utils.py             # Utility functions for processing resumes
-│   ├── urls.py              # URL routing for the app
-│   ├── graphql.py           # GraphQL schema
-│   ├── tests.py             # Unit tests
-│   └── ...
-│
-├── db.sqlite3               # Database file
-├── manage.py                # Django management script
-├── Dockerfile               # Dockerfile for containerization
-├── requirements.txt         # Python dependencies
-└── README.md                # Documentation
+resume_matcher/
+├── matcher/
+│   ├── migrations/
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── serializers.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── utils.py
+│   ├── views.py
+├── media/
+├── resume_matcher/
+│   ├── templates/
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+├── db.sqlite3
+├── dockerfile
+├── manage.py
+├── README.md
+
 ```
 
 # Installation and Setup
@@ -65,7 +75,7 @@ backend_challenge/
 ## Clone the Repository
 ```markdown
 git clone https://github.com/RenatoFRibeiro/chimchar.git
-cd backend_challenge
+cd resume_matcher
 ```
 
 ## Set Up a Virtual Environment
@@ -140,11 +150,11 @@ coverage report
 
 ## Build Docker Image
 ```markdown
-docker build -t resume-matcher .
+docker build -t resume_matcher .
 ```
 ## Run Docker Container
 ```markdown
-docker run -p 8000:8000 resume-matcher
+docker run -p 8000:8000 resume_matcher
 ```
 # Future Improvements
 

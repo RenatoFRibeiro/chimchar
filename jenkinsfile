@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = 'your-django-app' // Replace with your Docker image name
+        DOCKER_REGISTRY = 'your-docker-registry-url' // E.g., DockerHub or private registry
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Clone your repository
+                git 'https://github.com/RenatoFRibeiro/chimchar.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Use Python to set up a virtual environment and install requirements
+                sh '''
+                python -m venv venv
+                source venv/bin/activate
+                pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ${IMAGE_NAME} .'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                docker run --rm ${IMAGE_NAME} sh -c "
+                python manage.py test
+                "
+                '''
+            }
+        }
+
+        stage('Push to Registry') {
+            steps {
+                withDockerRegistry([url: "${DOCKER_REGISTRY}", credentialsId: 'docker-credentials-id']) {
+                    sh 'docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/${IMAGE_NAME}'
+                    sh 'docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy to your environment (e.g., staging or production)
+                echo 'Deploying the application...'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up after build
+            echo 'Pipeline completed.'
+        }
+    }
+}
